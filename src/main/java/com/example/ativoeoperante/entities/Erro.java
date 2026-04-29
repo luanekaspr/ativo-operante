@@ -1,5 +1,7 @@
 package com.example.ativoeoperante.entities;
 
+import jakarta.persistence.Entity;
+
 public class Erro {
     private String mensagem;
 

@@ -15,7 +15,7 @@ public class JWTTokenProvider {
     private static final SecretKey CHAVE = Keys.hmacShaKeyFor(
             "MINHACHAVESECRETA_MINHACHAVESECRETA".getBytes(StandardCharsets.UTF_8));
 
-    static public String getToken(String usuario,String nivel)
+    static public String createToken(String usuario,String nivel)
     {
         String jwtToken = Jwts.builder()
                 .setSubject(usuario)
@@ -32,7 +32,7 @@ public class JWTTokenProvider {
     static public boolean verifyToken(String token)
     {
         try {
-            Jwts.parserBuilder()
+            Jwts.parser()
                     .setSigningKey(CHAVE)
                     .build()
                     .parseClaimsJws(token).getSignature();
@@ -47,7 +47,7 @@ public class JWTTokenProvider {
     {
         Claims claims=null;
         try {
-            claims = Jwts.parserBuilder()
+            claims = Jwts.parser()
                     .setSigningKey(CHAVE)
                     .build()
                     .parseClaimsJws(token)
@@ -57,6 +57,21 @@ public class JWTTokenProvider {
         }
         return claims;
     }
+    static public String getClaimFromToken(String token, String chave)
+    {
+        Claims claims=null;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(CHAVE)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            System.out.println("Erro ao recuperar as informações (claims)");
+        }
+        return claims.get(chave).toString();
+    }
 
 }
+
 
