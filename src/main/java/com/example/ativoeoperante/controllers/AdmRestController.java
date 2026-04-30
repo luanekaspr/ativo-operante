@@ -2,8 +2,10 @@ package com.example.ativoeoperante.controllers;
 
 import com.example.ativoeoperante.entities.Denuncia;
 import com.example.ativoeoperante.entities.Erro;
+import com.example.ativoeoperante.entities.Orgao;
 import com.example.ativoeoperante.entities.Tipo;
 import com.example.ativoeoperante.services.DenunciaService;
+import com.example.ativoeoperante.services.OrgaoService;
 import com.example.ativoeoperante.services.TipoService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,5 +120,61 @@ public class AdmRestController {
         else
             return ResponseEntity.badRequest().body(new Erro("Erro ao excluir tipo, já existem denúncias vinculadas a ele!"));
     }
+
+    // ================================================= ORGÃO ============================================================================
+
+    @Autowired
+    OrgaoService orgaoService;
+
+    @PostMapping("/orgao")
+    public ResponseEntity<Object> inserir(@PathVariable Orgao orgao) {
+        Orgao orgaoinserir = orgaoService.inserir(orgao);
+
+        if (orgaoinserir != null) {
+            return ResponseEntity.ok(orgaoinserir);
+        } else {
+            return ResponseEntity.badRequest().body(new Erro("Erro ao inserir: Orgão já cadastrado ou dados inválidos!"));
+        }
+    }
+
+    @GetMapping("/orgao-all")
+    public ResponseEntity<Object> buscarorgao() {
+        List<Orgao> orgaoList = orgaoService.buscarOrgaos();
+        return ResponseEntity.ok(orgaoList);
+    }
+
+    @GetMapping("/orgao/id/{id}")
+    public ResponseEntity<Object> buscarOrgaoId(@PathVariable Long id) {
+        Orgao orgao = orgaoService.buscarPorId(id);
+        if(orgao != null)
+            return ResponseEntity.ok(orgao);
+        else
+            return ResponseEntity.badRequest().body(new Erro("Orgão não encontrado ou inexistente!"));
+    }
+
+    @GetMapping("/orgao/nome/{nome}")
+    public ResponseEntity<Object> buscarOrgaoPorNome(@PathVariable String nome) {
+        Orgao orgao = orgaoService.buscarPorNome(nome);
+        if(orgao != null)
+            return ResponseEntity.ok(orgao);
+        else
+            return ResponseEntity.badRequest().body(new Erro("Orgão não encontrado ou inexistente!"));
+    }
+
+    @GetMapping("/orgao/{palavraChave}")
+    public ResponseEntity<Object> buscarOrgaoPorPalavraChave(@PathVariable String palavraChave){
+        List<Orgao> orgaoList = orgaoService.buscarPorKW(palavraChave);
+        return ResponseEntity.ok(orgaoList);
+    }
+
+
+    @DeleteMapping("/orgao/deletar/{id}") //verificar se ja tem denuncia com ele ou não
+    public ResponseEntity<Object> removerorgao(@PathVariable Long id) {
+        if(orgaoService.apagar(id))
+            return ResponseEntity.noContent().build();
+        else
+            return ResponseEntity.badRequest().body(new Erro("Erro ao excluir orgão, já existem denúncias vinculadas a ele!"));
+    }
+
 
 }
