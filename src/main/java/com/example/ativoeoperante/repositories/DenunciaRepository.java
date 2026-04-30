@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface DenunciaRepository extends JpaRepository<Denuncia, Long> {
 
-    public Denuncia findByNome(String nome);
+    public Denuncia findByTitulo(String titulo);
 
     @Query(value = "SELECT * FROM denuncia WHERE upper(den_titulo) LIKE %:keyword%",nativeQuery = true)
     public List<Denuncia> findByKW(@Param("keyword") String keyword);

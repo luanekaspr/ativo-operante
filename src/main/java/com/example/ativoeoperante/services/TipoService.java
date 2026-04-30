@@ -3,9 +3,11 @@ import com.example.ativoeoperante.entities.Tipo;
 import com.example.ativoeoperante.repositories.DenunciaRepository;
 import com.example.ativoeoperante.repositories.TipoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TipoService {
 
     @Autowired

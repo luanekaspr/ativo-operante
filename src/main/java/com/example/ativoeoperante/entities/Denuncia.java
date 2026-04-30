@@ -22,7 +22,7 @@ public class Denuncia {
    @Column(name = "den_data", updatable = false)
    private LocalDateTime dataHora;
     @ManyToOne
-    @JoinColumn(name = "tipo_id",nullable = false)
+    @JoinColumn(name = "tip_id",nullable = false)
     private Tipo tipo;
     @ManyToOne
     @JoinColumn(name = "usu_id", nullable = false)

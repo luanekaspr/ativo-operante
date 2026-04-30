@@ -29,13 +29,12 @@ public class JWTTokenProvider {
         return jwtToken;
     }
 
-    static public boolean verifyToken(String token)
-    {
+    static public boolean verifyToken(String token) {
         try {
-            Jwts.parser()
+            Jwts.parserBuilder()
                     .setSigningKey(CHAVE)
                     .build()
-                    .parseClaimsJws(token).getSignature();
+                    .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             System.out.println(e);
@@ -47,7 +46,7 @@ public class JWTTokenProvider {
     {
         Claims claims=null;
         try {
-            claims = Jwts.parser()
+            claims = Jwts.parserBuilder()
                     .setSigningKey(CHAVE)
                     .build()
                     .parseClaimsJws(token)
@@ -61,7 +60,7 @@ public class JWTTokenProvider {
     {
         Claims claims=null;
         try {
-            claims = Jwts.parser()
+            claims = Jwts.parserBuilder()
                     .setSigningKey(CHAVE)
                     .build()
                     .parseClaimsJws(token)

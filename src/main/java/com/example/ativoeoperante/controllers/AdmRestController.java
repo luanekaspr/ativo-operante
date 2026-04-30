@@ -23,7 +23,7 @@ public class AdmRestController {
 
     // ================================================= DENÚNCIAS ============================================================================
 
-    @GetMapping("/todas_denuncias")
+    @GetMapping("/denuncias-all")
     public ResponseEntity<Object> buscarTodasDenuncias() {
      //String token = request.getHeader("Authorization");
       //if (!JWTTokenProvider.verifyToken(token))
@@ -32,7 +32,7 @@ public class AdmRestController {
         return ResponseEntity.ok(denunciaList);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/denuncias/id/{id}")
     public ResponseEntity<Object> buscarDenunciaId(@PathVariable Long id) {
         Denuncia denuncia = denunciaService.buscarPorId(id);
         if(denuncia != null)
@@ -41,7 +41,7 @@ public class AdmRestController {
             return ResponseEntity.badRequest().body(new Erro("Denúncia não encontrada!"));
     }
 
-    @GetMapping("/titulo/{titulo}")
+    @GetMapping("/denuncias/titulo/{titulo}")
     public ResponseEntity<Object> buscarDenunciaPorTitulo(@PathVariable String titulo) {
         Denuncia denuncia = denunciaService.buscarPorTitulo(titulo);
         if(denuncia != null)
@@ -50,13 +50,13 @@ public class AdmRestController {
             return ResponseEntity.badRequest().body(new Erro("Denúncia não encontrada!"));
     }
 
-    @GetMapping("/kw/{palavraChave}")
+    @GetMapping("/denuncias/kw/{palavraChave}")
     public ResponseEntity<Object> buscarPorPalavraChave(@PathVariable String palavraChave){
         List<Denuncia> denunciaList = denunciaService.buscarPorKW(palavraChave);
         return ResponseEntity.ok(denunciaList);
     }
 
-    @DeleteMapping("{id}") //verificar se ja tem feedback ou nao
+    @DeleteMapping("/denuncia/deletar/{id}") //verificar se ja tem feedback ou nao
     public ResponseEntity<Object> remover(@PathVariable Long id) {
         if(denunciaService.apagar(id))
             return ResponseEntity.noContent().build();

@@ -24,7 +24,7 @@ public class DenunciaService {
     }
 
     public Denuncia buscarPorTitulo(String titulo){
-        Denuncia denuncia = denunciaRepository.findByNome(titulo);
+        Denuncia denuncia = denunciaRepository.findByTitulo(titulo);
         return denuncia;
     }
 
