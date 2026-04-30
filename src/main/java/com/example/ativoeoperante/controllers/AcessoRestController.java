@@ -10,16 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("apis/acesso")
+@RequestMapping("acesso")
 public class AcessoRestController {
-    @PostMapping("/autenticar")
+    @PostMapping("/logar")
     public ResponseEntity<Object> autenticar(String email, String senha,String nivel){
         String token= "";
         if (email.equals("admin@pm.br") && senha.equals("123321")){
-            token = JWTTokenProvider.getToken(email,senha);
+            token = JWTTokenProvider.createToken(email,senha);
             return new ResponseEntity<>(token, HttpStatus.OK);
         }
         else
             return new ResponseEntity<>("ACESSO NAO PERMITIDO",HttpStatus.NOT_ACCEPTABLE);
     }
+
+    //@postmapping ("criar")
 }

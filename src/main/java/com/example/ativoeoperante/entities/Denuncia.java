@@ -27,6 +27,7 @@ public class Denuncia {
     @ManyToOne
     @JoinColumn(name = "usu_id", nullable = false)
     private Usuario usuario;
+    //feedback onetoone adicionar
 
     public Denuncia() {
         this(null, "", "", 0, null, LocalDateTime.now(), null, null);
