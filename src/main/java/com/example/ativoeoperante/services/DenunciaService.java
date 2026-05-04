@@ -49,4 +49,8 @@ public class DenunciaService {
         return false;
     }
 
+    public List<Denuncia> buscarDenunciaPorUsuarioId(Long usuarioId) {
+        return denunciaRepository.findByUsuarioId(usuarioId);
+    }
+
 }

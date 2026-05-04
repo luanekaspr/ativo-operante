@@ -20,4 +20,6 @@ public interface DenunciaRepository extends JpaRepository<Denuncia, Long> {
 
     //vem lá do orgão pra persistir se já existe antes de cadastrar
     boolean existsByOrgaoId(Long tipoId);
+
+    List<Denuncia> findByUsuarioId(Long usuarioId);
 }
