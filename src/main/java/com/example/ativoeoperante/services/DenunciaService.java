@@ -1,7 +1,9 @@
 package com.example.ativoeoperante.services;
 
 import com.example.ativoeoperante.entities.Denuncia;
+import com.example.ativoeoperante.entities.Feedback;
 import com.example.ativoeoperante.repositories.DenunciaRepository;
+import com.example.ativoeoperante.repositories.FeedbackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,9 @@ public class DenunciaService {
 
     @Autowired
     DenunciaRepository denunciaRepository;
+
+    @Autowired
+    FeedbackRepository feedbackRepository;
 
     public List<Denuncia> buscarTodasDenuncias() {
         List<Denuncia> denunciaList = denunciaRepository.findAll();
@@ -51,6 +56,27 @@ public class DenunciaService {
 
     public List<Denuncia> buscarDenunciaPorUsuarioId(Long usuarioId) {
         return denunciaRepository.findByUsuarioId(usuarioId);
+    }
+
+    //-------- FEEDBACK ---------
+
+    public Feedback darFeedback(String texto, Long denunciaId) {
+        Denuncia denuncia = denunciaRepository.findById(denunciaId).orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
+
+        //cria o feedback
+        Feedback feedback = new Feedback();
+        feedback.setTexto(texto);
+        feedback.setDenuncia(denuncia);
+
+        return feedbackRepository.save(feedback);
+    }
+
+    public boolean apagarFeedback(Long id){
+        if(buscarPorId(id)!=null) {
+            denunciaRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
 }

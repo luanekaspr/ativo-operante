@@ -1,14 +1,12 @@
 package com.example.ativoeoperante.controllers;
 
-import com.example.ativoeoperante.entities.Denuncia;
-import com.example.ativoeoperante.entities.Erro;
-import com.example.ativoeoperante.entities.Orgao;
-import com.example.ativoeoperante.entities.Tipo;
+import com.example.ativoeoperante.entities.*;
 import com.example.ativoeoperante.services.DenunciaService;
 import com.example.ativoeoperante.services.OrgaoService;
 import com.example.ativoeoperante.services.TipoService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,6 +64,20 @@ public class AdmRestController {
             return ResponseEntity.badRequest().body(new Erro("Erro ao excluir denúncia!"));
     }
 
+    // ============================== FEEDBACK ==================================
+
+    @PostMapping("/denuncias/{id}/feedback")
+    public ResponseEntity<Object> registrarFeedback(@PathVariable Long id, @RequestBody String texto) {
+        try {
+            Feedback novoFeedback = denunciaService.darFeedback(texto,id);
+            return ResponseEntity.ok(novoFeedback);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Erro("Erro ao registrar feedback"));
+        }
+    }
+
+
+
     // ================================================= TIPO ============================================================================
 
     @Autowired
@@ -89,7 +101,7 @@ public class AdmRestController {
     }
 
     @GetMapping("/tipos/id/{id}")
-    public ResponseEntity<Object> buscarTipoId(@PathVariable Long id) {
+    public ResponseEntity<Object> buscarTipoId(@RequestBody Long id) {
         Tipo tipo = tipoService.buscarPorId(id);
         if(tipo != null)
             return ResponseEntity.ok(tipo);
@@ -127,7 +139,7 @@ public class AdmRestController {
     OrgaoService orgaoService;
 
     @PostMapping("/orgao")
-    public ResponseEntity<Object> inserir(@PathVariable Orgao orgao) {
+    public ResponseEntity<Object> inserir(@RequestBody Orgao orgao) {
         Orgao orgaoinserir = orgaoService.inserir(orgao);
 
         if (orgaoinserir != null) {

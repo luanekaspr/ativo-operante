@@ -13,20 +13,44 @@ public class Feedback {
     private String texto;
     @OneToOne
     @JoinColumn(name ="den_id", nullable = false)
-    private Orgao orgao;
+    private Denuncia denuncia;
 
     public Feedback() {
         this(0L,"",null);
     }
 
-    public Feedback(Long id, String texto, Orgao orgao) {
+    public Feedback(Long id, String texto, Denuncia denuncia) {
         this.id = id;
         this.texto = texto;
-        this.orgao = orgao;
+        this.denuncia = denuncia;
     }
 
-    public Feedback(String texto, Orgao orgao) {
+    public Feedback(String texto, Denuncia denuncia) {
         this.texto = texto;
-        this.orgao = orgao;
+        this.denuncia = denuncia;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public Denuncia getDenuncia() {
+        return denuncia;
+    }
+
+    public void setDenuncia(Denuncia denuncia) {
+        this.denuncia = denuncia;
     }
 }
