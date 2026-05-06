@@ -12,7 +12,7 @@ public interface OrgaoRepository extends JpaRepository<Orgao, Long> {
 
     public Orgao findByNome(String nome);
 
-    @Query(value = "SELECT * FROM orgaos WHERE upper(den_titulo) LIKE %:keyword%",nativeQuery = true)
+    @Query(value = "SELECT * FROM orgaos WHERE upper(org_nome) LIKE %:keyword%",nativeQuery = true)
     public List<Orgao> findByKW(@Param("keyword") String keyword);
 
 }

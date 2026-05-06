@@ -76,16 +76,13 @@ public class AdmRestController {
         }
     }
 
-
-
-
     // ================================================= TIPO ============================================================================
 
     @Autowired
     TipoService tipoService;
 
     @PostMapping("/tipos")
-    public ResponseEntity<Object> inserir(@PathVariable Tipo tipo) {
+    public ResponseEntity<Object> inserir(@RequestBody Tipo tipo) {
         Tipo tipoinserir = tipoService.inserir(tipo);
 
         if (tipoinserir != null) {
@@ -102,7 +99,7 @@ public class AdmRestController {
     }
 
     @GetMapping("/tipos/id/{id}")
-    public ResponseEntity<Object> buscarTipoId(@RequestBody Long id) {
+    public ResponseEntity<Object> buscarTipoId(@PathVariable Long id) {
         Tipo tipo = tipoService.buscarPorId(id);
         if(tipo != null)
             return ResponseEntity.ok(tipo);
