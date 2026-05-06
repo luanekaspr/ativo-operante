@@ -12,13 +12,16 @@ public class UsuarioService {
 
         // Cadastro do cidadão
         public Usuario cadastrar(Usuario usuario) {
-            usuario.setSenha(usuario.getSenha().hashCode());
-            usuario.setNivel(1);
+            usuario.setNivel(2);
             return usuarioRepository.save(usuario);
         }
 
         //busca se usuário e senha batem
         public Usuario autenticar(String email, int senha) {
-            return usuarioRepository.findByEmailSenha(email, senha).orElse(null);
+            Usuario usuario = usuarioRepository.findByEmailAndSenha(email, senha);
+            if(usuario != null){
+                return usuario;
+            }
+            return null;
         }
 }
