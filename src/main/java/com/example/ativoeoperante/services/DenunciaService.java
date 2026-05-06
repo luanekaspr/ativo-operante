@@ -71,12 +71,23 @@ public class DenunciaService {
         return feedbackRepository.save(feedback);
     }
 
-    public boolean apagarFeedback(Long id){
-        if(buscarPorId(id)!=null) {
-            denunciaRepository.deleteById(id);
+    public boolean apagarFeedback(Long idFeedback) {
+        return feedbackRepository.findById(idFeedback).map(feedback -> {
+            Denuncia denuncia = feedback.getDenuncia();
+
+
+            if (denuncia != null) {
+                denuncia.buscarFeedbacks().remove(feedback);
+            }
+            feedbackRepository.delete(feedback);
             return true;
-        }
-        return false;
+        }).orElse(false);
     }
+
+    public List<Feedback> buscarFeedbacks() {
+        List<Feedback> feedbackList = feedbackRepository.findAll();
+        return feedbackList;
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.ativoeoperante.entities;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name= "denuncia")
@@ -27,7 +28,10 @@ public class Denuncia {
     @ManyToOne
     @JoinColumn(name = "usu_id", nullable = false)
     private Usuario usuario;
-    //feedback onetoone adicionar
+    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Feedback> feedbacks;
+
+
 
     public Denuncia() {
         this(null, "", "", 0, null, LocalDateTime.now(), null, null);

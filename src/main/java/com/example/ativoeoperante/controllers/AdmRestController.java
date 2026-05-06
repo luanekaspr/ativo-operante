@@ -76,6 +76,13 @@ public class AdmRestController {
         }
     }
 
+    @DeleteMapping("/denuncias/deletar/feedback/{id}")
+    public ResponseEntity<Object> deletarFeedback(@PathVariable long id){
+        if(denunciaService.apagarFeedback(id))
+            return ResponseEntity.noContent().build();
+        else
+            return ResponseEntity.badRequest().body(new Erro("Erro ao excluir feedback"));
+    }
 
 
 
@@ -85,7 +92,7 @@ public class AdmRestController {
     TipoService tipoService;
 
     @PostMapping("/tipos")
-    public ResponseEntity<Object> inserir(@PathVariable Tipo tipo) {
+    public ResponseEntity<Object> inserir(@RequestBody Tipo tipo) {
         Tipo tipoinserir = tipoService.inserir(tipo);
 
         if (tipoinserir != null) {
