@@ -53,4 +53,6 @@ public class Feedback {
     public void setDenuncia(Denuncia denuncia) {
         this.denuncia = denuncia;
     }
+
+
 }

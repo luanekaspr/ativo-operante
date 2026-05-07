@@ -71,17 +71,14 @@ public class DenunciaService {
         return feedbackRepository.save(feedback);
     }
 
-    public boolean apagarFeedback(Long idFeedback) {
-        return feedbackRepository.findById(idFeedback).map(feedback -> {
-            Denuncia denuncia = feedback.getDenuncia();
 
+    public Denuncia apagarFeedback(Long denunciaId) {
 
-            if (denuncia != null) {
-                denuncia.buscarFeedbacks().remove(feedback);
-            }
-            feedbackRepository.delete(feedback);
-            return true;
-        }).orElse(false);
+        Denuncia denuncia = denunciaRepository.findById(denunciaId).orElseThrow();
+        denuncia.setFeedback(null);
+
+        return denunciaRepository.save(denuncia);
+
     }
 
     public List<Feedback> buscarFeedbacks() {
