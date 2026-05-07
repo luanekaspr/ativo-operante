@@ -48,18 +48,6 @@ public class Denuncia {
         this.usuario = usuario;
     }
 
-    public Denuncia(Long id, String titulo, String texto, int urgencia, LocalDateTime dataHora, Orgao orgao, Tipo tipo, Usuario usuario, Feedback feedback) {
-        this.id = id;
-        this.titulo = titulo;
-        this.texto = texto;
-        this.urgencia = urgencia;
-        this.dataHora = dataHora;
-        this.orgao = orgao;
-        this.tipo = tipo;
-        this.usuario = usuario;
-        this.feedback = feedback;
-    }
-
     public Feedback getFeedback() {
         return feedback;
     }

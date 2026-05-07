@@ -1,6 +1,7 @@
 package com.example.ativoeoperante.services;
 
 import com.example.ativoeoperante.entities.Denuncia;
+import com.example.ativoeoperante.entities.Erro;
 import com.example.ativoeoperante.entities.Feedback;
 import com.example.ativoeoperante.repositories.DenunciaRepository;
 import com.example.ativoeoperante.repositories.FeedbackRepository;
@@ -60,31 +61,44 @@ public class DenunciaService {
 
     //-------- FEEDBACK ---------
 
-    public Feedback darFeedback(String texto, Long denunciaId) {
-        Denuncia denuncia = denunciaRepository.findById(denunciaId).orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
 
-        //cria o feedback
-        Feedback feedback = new Feedback();
-        feedback.setTexto(texto);
-        feedback.setDenuncia(denuncia);
+        // Registrar feedback
+        public Feedback darFeedback(String texto, Long denunciaId) {
+            Denuncia denuncia = denunciaRepository.findById(denunciaId).orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
 
-        return feedbackRepository.save(feedback);
-    }
+            //se já tiver feedback
+            if (denuncia.getFeedback() != null) {
+                throw new RuntimeException("Já existe feedback na denúncia");
+            }
 
-
-    public Denuncia apagarFeedback(Long denunciaId) {
-
-        Denuncia denuncia = denunciaRepository.findById(denunciaId).orElseThrow();
-        denuncia.setFeedback(null);
-
-        return denunciaRepository.save(denuncia);
-
-    }
-
-    public List<Feedback> buscarFeedbacks() {
-        List<Feedback> feedbackList = feedbackRepository.findAll();
-        return feedbackList;
-    }
+            Feedback feedback = new Feedback();
+            feedback.setTexto(texto);
+            feedback.setDenuncia(denuncia);
+            denuncia.setFeedback(feedback);
 
 
+            return feedbackRepository.save(feedback);
+        }
+
+        // Apagar feedback
+        public boolean apagarFeedback(Long denunciaId) {
+            Denuncia denuncia = denunciaRepository.findById(denunciaId)
+                    .orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
+
+            Feedback feedback = denuncia.getFeedback();
+            if (feedback != null) {
+
+                denuncia.setFeedback(null);
+                denunciaRepository.save(denuncia);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public List<Feedback> buscarFeedbacks() {
+            List<Feedback> feedbackList = feedbackRepository.findAll();
+            return feedbackList;
+        }
 }
+
