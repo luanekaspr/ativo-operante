@@ -78,7 +78,7 @@ public class AdmRestController {
 
     @DeleteMapping("/denuncias/deletar/feedback/{id}")
     public ResponseEntity<Object> deletarFeedback(@PathVariable long id){
-        if(denunciaService.apagarFeedback(id).getFeedback() != null)
+        if(denunciaService.apagarFeedback(id))
             return ResponseEntity.noContent().build();
         else
             return ResponseEntity.badRequest().body(new Erro("Erro ao excluir feedback"));
@@ -89,7 +89,6 @@ public class AdmRestController {
         List <Feedback> feedbackList = denunciaService.buscarFeedbacks();
         return ResponseEntity.ok(feedbackList);
     }
-
 
 
     // ================================================= TIPO ============================================================================
