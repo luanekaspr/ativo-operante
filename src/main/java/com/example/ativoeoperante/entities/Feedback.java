@@ -46,9 +46,9 @@ public class Feedback {
         this.texto = texto;
     }
 
-    public Denuncia getDenuncia() {
-        return denuncia;
-    }
+//    //public Denuncia getDenuncia() {
+//        return denuncia;
+//    }
 
     public void setDenuncia(Denuncia denuncia) {
         this.denuncia = denuncia;
