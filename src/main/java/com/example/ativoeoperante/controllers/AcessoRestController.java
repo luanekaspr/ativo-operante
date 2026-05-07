@@ -3,6 +3,7 @@ package com.example.ativoeoperante.controllers;
 
 import com.example.ativoeoperante.entities.Erro;
 import com.example.ativoeoperante.entities.Usuario;
+import com.example.ativoeoperante.repositories.UsuarioRepository;
 import com.example.ativoeoperante.security.JWTTokenProvider;
 import com.example.ativoeoperante.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,35 +12,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("acesso")
+@RequestMapping("apis/acesso")
 public class AcessoRestController {
-
     @Autowired
     UsuarioService usuarioService;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    @PostMapping("/logar")
-    public ResponseEntity<Object> autenticar(@RequestParam String email, @RequestParam int senha) {
-        Usuario usuario = usuarioService.autenticar(email, senha);
+    @PostMapping("/autenticar")
+    public ResponseEntity<Object> autenticarUser(String login, int senha)
+    {
+        Usuario usuarioEncontrado = usuarioRepository.findByEmail(login);
+        String token="";
 
-        if (usuario != null) {
-            String nivel = usuario.getNivel() == 1 ? "adm" : "cidadao";
-            String token = JWTTokenProvider.createToken(email, nivel);
-            return ResponseEntity.ok(token);
+        if(usuarioEncontrado != null) {
+            if (usuarioEncontrado.getSenha() == senha) {
+                token = JWTTokenProvider.getToken(login, ""+usuarioEncontrado.getNivel());
+                return new ResponseEntity<>(token, HttpStatus.OK);
+            }
         }
-        else
-            return new ResponseEntity<>("Acesso não permitido", HttpStatus.UNAUTHORIZED);
+
+        return new ResponseEntity<>("ACESSO NAO PERMITIDO", HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @PostMapping("/criar")
-    public ResponseEntity<Usuario> criar(@RequestBody Usuario usuario) {
-        Usuario novoUsuario = usuarioService.cadastrar(usuario);
-        if(novoUsuario != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
+    @PostMapping("/cadastrar-cidadao")
+    public ResponseEntity<Object> cadastrarNovoCidadao(@RequestBody Usuario usuario) {
+        Usuario novoUsuario = usuarioService.inserirUsuario(usuario);
+        if (novoUsuario != null) {
+            return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(new Erro("Este e-mail já está cadastrado no sistema."), HttpStatus.BAD_REQUEST);
         }
-        else
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-
     }
-
 }
-

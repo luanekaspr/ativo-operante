@@ -29,11 +29,32 @@ public class CidadaoRestController {
     @Autowired
     OrgaoService orgaoService;
 
+    // verifica token e nivel
+    private ResponseEntity<Object> validarAcessoCidadao() {
+        String token = request.getHeader("Authorization");
+
+        if (token == null || !JWTTokenProvider.verifyToken(token)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        io.jsonwebtoken.Claims detalhes = JWTTokenProvider.getAllClaimsFromToken(token);
+        if (detalhes != null && detalhes.get("nivel") != null) {
+            String nivel = detalhes.get("nivel").toString();
+            if (nivel.equals("1")) { // 1 = Administrador (Impede a prefeitura de usar rotas do cidadão)
+                return new ResponseEntity<>("Acesso restrito ao cidadão", HttpStatus.FORBIDDEN);
+            }
+        }
+        return null;
+    }
+
     // ================================================= DENÚNCIAS ============================================================================
 
     // Adicionar denúncia
     @PostMapping("/denuncias")
     public ResponseEntity<Object> adicionarDenuncia(@RequestBody Denuncia denuncia) {
+        ResponseEntity<Object> erroAcesso = validarAcessoCidadao();
+        if (erroAcesso != null) return erroAcesso;
+
         denuncia = denunciaService.inserir(denuncia);
         if(denuncia != null)
             return ResponseEntity.ok(denuncia);
@@ -44,6 +65,9 @@ public class CidadaoRestController {
     // para consguir testar por enquanto passa o id do usuario direto como param
     @GetMapping("/denuncias/usuario/{usuarioId}")
     public ResponseEntity<Object> buscarDenunciasDoUsuario(@PathVariable Long usuarioId) {
+        ResponseEntity<Object> erroAcesso = validarAcessoCidadao();
+        if (erroAcesso != null) return erroAcesso;
+
         List<Denuncia> denunciasList = denunciaService.buscarDenunciaPorUsuarioId(usuarioId);
 
         if (denunciasList != null)
@@ -55,6 +79,9 @@ public class CidadaoRestController {
     // ainda como teste, aqui pega o id do usuario pelo token da autorização
     @GetMapping("/denuncias/usuario/minhas")
     public ResponseEntity<Object> buscarDenunciasDoUsuario(@RequestHeader("Authorization") String token) {
+        ResponseEntity<Object> erroAcesso = validarAcessoCidadao();
+        if (erroAcesso != null) return erroAcesso;
+
         String tokenLimpo = token.replace("Bearer ", "");
         if (!JWTTokenProvider.verifyToken(tokenLimpo))
             return new ResponseEntity<>("Token inválido ou expirado", HttpStatus.UNAUTHORIZED);
@@ -75,6 +102,9 @@ public class CidadaoRestController {
     //listar tipos
     @GetMapping("/tipos-all")
     public ResponseEntity<Object> buscarTipos() {
+        ResponseEntity<Object> erroAcesso = validarAcessoCidadao();
+        if (erroAcesso != null) return erroAcesso;
+
         List<Tipo> tipoList = tipoService.buscarTipos();
         return ResponseEntity.ok(tipoList);
     }
@@ -83,6 +113,9 @@ public class CidadaoRestController {
 
     @GetMapping("/orgao-all")
     public ResponseEntity<Object> buscarorgao() {
+        ResponseEntity<Object> erroAcesso = validarAcessoCidadao();
+        if (erroAcesso != null) return erroAcesso;
+
         List<Orgao> orgaoList = orgaoService.buscarOrgaos();
         return ResponseEntity.ok(orgaoList);
     }
