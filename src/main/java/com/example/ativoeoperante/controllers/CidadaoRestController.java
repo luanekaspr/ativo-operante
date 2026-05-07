@@ -36,7 +36,7 @@ public class CidadaoRestController {
     public ResponseEntity<Object> adicionarDenuncia(@RequestBody Denuncia denuncia) {
         denuncia = denunciaService.inserir(denuncia);
         if(denuncia != null)
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(denuncia);
         else
             return ResponseEntity.badRequest().body(new Erro("Erro ao cadastrar a denúncia!"));
     }
