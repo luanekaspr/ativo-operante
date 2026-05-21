@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ativo e Operante! - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+    <div id="globalAlert" class="alert"></div>
+    <div id="loading" class="loading hidden"><i class="fas fa-spinner"></i> Carregando...</div>
+
+    <!-- Tela de Login -->
+    <div id="loginScreen">
+        <div class="card" style="max-width: 400px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-eye" style="font-size: 3rem; color: #667eea;"></i>
+                <h1 style="margin-top: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Ativo e Operante!</h1>
+                <p style="color: #666;">Sistema de Denúncias Cidadãs</p>
+            </div>
+
+            <h2 style="text-align: center; margin-bottom: 1.5rem;">
+                <i class="fas fa-sign-in-alt"></i> Acessar Sistema
+            </h2>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="loginSenha" placeholder="••••••" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Entrar</button>
+            </form>
+
+            <hr style="margin: 1.5rem 0;">
+
+            <p style="text-align: center;">
+                Não tem conta? <a href="#" onclick="showRegister()" style="color: #667eea; text-decoration: none; font-weight: 600;">Cadastre-se</a>
+            </p>
+
+            <div style="margin-top: 1rem; padding: 1rem; background: #f0f0f0; border-radius: 10px; font-size: 0.85rem;">
+                <p style="color: #666; margin-bottom: 0.5rem;"><strong>⚠️ Acesso Administrador:</strong></p>
+                <p style="color: #666;">Email: admin@pm.br<br>Senha: 123321</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Cadastro -->
+    <div id="registerScreen" class="hidden">
+        <div class="card" style="max-width: 450px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-user-plus" style="font-size: 3rem; color: #667eea;"></i>
+                <h2 style="margin-top: 1rem; color: #667eea;">Cadastro de Cidadão</h2>
+            </div>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>CPF</label>
+                    <input type="text" id="registerCpf" placeholder="000.000.000-00" required
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')"
+                           maxlength="14">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="registerEmail" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="registerSenha" placeholder="••••••" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirmar Senha</label>
+                    <input type="password" id="registerConfirmSenha" placeholder="••••••" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Cadastrar</button>
+            </form>
+
+            <hr style="margin: 1.5rem 0;">
+
+            <p style="text-align: center;">
+                Já tem conta? <a href="#" onclick="showLogin()" style="color: #667eea; text-decoration: none; font-weight: 600;">Faça login</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    // Controle de telas
+    function showLogin() {
+        document.getElementById('loginScreen').classList.remove('hidden');
+        document.getElementById('registerScreen').classList.add('hidden');
+    }
+
+    function showRegister() {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('registerScreen').classList.remove('hidden');
+    }
+
+    // Login
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const senha = document.getElementById('loginSenha').value;
+        await login(email, senha);
+    });
+
+    // Cadastro
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const cpf = document.getElementById('registerCpf').value.replace(/[^0-9]/g, '');
+        const email = document.getElementById('registerEmail').value;
+        const senha = document.getElementById('registerSenha').value;
+        const confirmSenha = document.getElementById('registerConfirmSenha').value;
+
+        if (senha !== confirmSenha) {
+            showAlert('As senhas não coincidem!', 'error');
+            return;
+        }
+
+        if (cpf.length !== 11) {
+            showAlert('CPF inválido!', 'error');
+            return;
+        }
+
+        await register(cpf, email, senha);
+    });
+
+    // Verificar se já está logado
+    const savedToken = localStorage.getItem('token');
+    const savedEmail = localStorage.getItem('userEmail');
+    if (savedToken && savedEmail) {
+        authToken = savedToken;
+        userEmail = savedEmail;
+        if (savedEmail === 'admin@pm.br') {
+            window.location.href = 'admin.html';
+        } else {
+            window.location.href = 'cidadao.html';
+        }
+    }
+</script>
+</body>
+</html>

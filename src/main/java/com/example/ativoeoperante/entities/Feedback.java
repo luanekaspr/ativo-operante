@@ -12,7 +12,7 @@ public class Feedback {
     @Column(name = "fee_texto")
     private String texto;
     @OneToOne
-    @JoinColumn(name ="den_id", nullable = false)
+    @JoinColumn(name = "den_id", nullable = false, unique = true)
     private Denuncia denuncia;
 
     public Feedback() {

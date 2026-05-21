@@ -76,7 +76,6 @@ public class CidadaoRestController {
             return ResponseEntity.badRequest().body(new Erro("Denúncias não encontradas!"));
     }
 
-    // ainda como teste, aqui pega o id do usuario pelo token da autorização
     @GetMapping("/denuncias/usuario/minhas")
     public ResponseEntity<Object> buscarDenunciasDoUsuario(@RequestHeader("Authorization") String token) {
         ResponseEntity<Object> erroAcesso = validarAcessoCidadao();
@@ -86,12 +85,12 @@ public class CidadaoRestController {
         if (!JWTTokenProvider.verifyToken(tokenLimpo))
             return new ResponseEntity<>("Token inválido ou expirado", HttpStatus.UNAUTHORIZED);
 
-        String usuarioInfo = JWTTokenProvider.getAllClaimsFromToken(tokenLimpo).getSubject();
+        io.jsonwebtoken.Claims detalhes = JWTTokenProvider.getAllClaimsFromToken(tokenLimpo);
         try {
-            Long usuarioId = Long.parseLong(usuarioInfo);
+            Long usuarioId = Long.parseLong(detalhes.get("id").toString());
             List<Denuncia> minhasDenuncias = denunciaService.buscarDenunciaPorUsuarioId(usuarioId);
             return ResponseEntity.ok(minhasDenuncias);
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(new Erro("ID do usuário no token é inválido."));
         }
     }

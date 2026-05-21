@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ativo e Operante! - Área Administrativa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="header">
+    <div class="nav-container">
+        <div class="logo">
+            <i class="fas fa-eye"></i>
+            <span>Ativo e Operante! - Administrador</span>
+        </div>
+        <div class="nav-links">
+            <a onclick="mostrarSecaoAdmin('denuncias')">Denúncias</a>
+            <a onclick="mostrarSecaoAdmin('orgaos')">Órgãos</a>
+            <a onclick="mostrarSecaoAdmin('tipos')">Tipos de Problemas</a>
+            <button class="btn-logout" onclick="logout()">Sair</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div id="globalAlert" class="alert"></div>
+    <div id="loading" class="loading hidden"><i class="fas fa-spinner"></i> Carregando...</div>
+
+    <!-- Estatísticas -->
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <!-- Todas Denúncias -->
+    <div id="secaoAdminDenuncias" class="secao-admin">
+        <div class="card">
+            <h2><i class="fas fa-database"></i> Todas as Denúncias</h2>
+            <div id="todasDenunciasList"></div>
+        </div>
+    </div>
+
+    <!-- Órgãos -->
+    <div id="secaoAdminOrgaos" class="secao-admin hidden">
+        <div class="card">
+            <h2><i class="fas fa-building"></i> Gerenciar Órgãos</h2>
+            <form id="formOrgao">
+                <div class="form-group">
+                    <label>Nome do Órgão</label>
+                    <input type="text" id="orgaoNome" required>
+                </div>
+                <button type="submit" class="btn-primary">Adicionar Órgão</button>
+            </form>
+            <hr style="margin: 2rem 0;">
+            <div id="orgaosList"></div>
+        </div>
+    </div>
+
+    <!-- Tipos de Problema -->
+    <div id="secaoAdminTipos" class="secao-admin hidden">
+        <div class="card">
+            <h2><i class="fas fa-tags"></i> Gerenciar Tipos de Problema</h2>
+            <form id="formTipo">
+                <div class="form-group">
+                    <label>Nome do Tipo</label>
+                    <input type="text" id="tipoNome" required>
+                </div>
+                <button type="submit" class="btn-primary">Adicionar Tipo</button>
+            </form>
+            <hr style="margin: 2rem 0;">
+            <div id="tiposList"></div>
+        </div>
+    </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+<script>
+    // Verificar autenticação
+    const savedToken = localStorage.getItem('token');
+    const savedEmail = localStorage.getItem('userEmail');
+
+    if (!savedToken || !savedEmail) {
+        window.location.href = 'index.html';
+    } else if (savedEmail !== 'admin@pm.br') {
+        window.location.href = 'cidadao.html';
+    } else {
+        authToken = savedToken;
+        userEmail = savedEmail;
+        userNivel = 'administrador';
+        carregarDashboardAdmin();
+    }
+</script>
+</body>
+</html>

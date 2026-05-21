@@ -64,9 +64,9 @@ public class DenunciaService {
 
         // Registrar feedback
         public Feedback darFeedback(String texto, Long denunciaId) {
-            Denuncia denuncia = denunciaRepository.findById(denunciaId).orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
+            Denuncia denuncia = denunciaRepository.findById(denunciaId)
+                    .orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
 
-            //se já tiver feedback
             if (denuncia.getFeedback() != null) {
                 throw new RuntimeException("Já existe feedback na denúncia");
             }
@@ -74,8 +74,6 @@ public class DenunciaService {
             Feedback feedback = new Feedback();
             feedback.setTexto(texto);
             feedback.setDenuncia(denuncia);
-            denuncia.setFeedback(feedback);
-
 
             return feedbackRepository.save(feedback);
         }

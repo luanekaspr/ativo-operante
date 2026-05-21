@@ -115,7 +115,7 @@ public class AdmRestController {
         ResponseEntity<Object> erroAcesso = validarAcessoAdmin();
         if (erroAcesso != null) return erroAcesso;
 
-        if(denunciaService.apagarFeedback(id).getFeedback() != null)
+        if(denunciaService.apagarFeedback(id))
             return ResponseEntity.noContent().build();
         else
             return ResponseEntity.badRequest().body(new Erro("Erro ao excluir feedback"));

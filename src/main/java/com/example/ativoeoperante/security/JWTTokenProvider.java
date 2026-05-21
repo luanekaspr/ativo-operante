@@ -15,12 +15,13 @@ public class JWTTokenProvider {
     private static final SecretKey CHAVE = Keys.hmacShaKeyFor(
             "MINHACHAVESECRETA_MINHACHAVESECRETA".getBytes(StandardCharsets.UTF_8));
 
-    static public String getToken(String usuario, String nivel)
+    static public String getToken(String usuario, String nivel, Long id)
     {
         String jwtToken = Jwts.builder()
                 .setSubject(usuario)
                 .setIssuer("localhost:8080")
                 .claim("nivel", nivel)
+                .claim("id", id)
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(LocalDateTime.now().plusMinutes(15L)
                         .atZone(ZoneId.systemDefault()).toInstant()))
