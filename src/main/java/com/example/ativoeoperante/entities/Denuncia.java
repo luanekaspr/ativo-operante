@@ -30,6 +30,8 @@ public class Denuncia {
     private Usuario usuario;
     @OneToOne(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
     private Feedback feedback;
+    @Column(name = "den_foto")
+    private String foto;
 
 
 
@@ -119,4 +121,8 @@ public class Denuncia {
     public void setOrgao(Orgao orgao) {
         this.orgao = orgao;
     }
+
+    public String getFoto() { return foto; }
+
+    public void setFoto(String foto) { this.foto = foto; }
 }

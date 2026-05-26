@@ -44,7 +44,9 @@ public class DenunciaService {
             denuncia = denunciaRepository.save(denuncia);
             return denuncia;
         } catch (Exception e) {
-            return null; }
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public boolean apagar(Long id){

@@ -92,12 +92,19 @@ async function carregarTodasDenuncias() {
                 <div class="denuncia-card">
                     <span class="urgencia urgencia-${denuncia.urgencia}">Urgência ${denuncia.urgencia}</span>
                     <div class="denuncia-titulo">${denuncia.titulo}</div>
-                    <div class="denuncia-descricao">${denuncia.descricao}</div>
+                    <div class="denuncia-descricao">${denuncia.texto}</div>
                     <div class="denuncia-meta">
-                        <div><strong>Data:</strong> ${new Date(denuncia.data).toLocaleDateString()}</div>
+                        <div><strong>Data:</strong> ${new Date(denuncia.dataHora).toLocaleDateString()}</div>
                         <div><strong>Cidadão:</strong> ${denuncia.usuario?.email || 'N/A'}</div>
                         <div><strong>Órgão:</strong> ${denuncia.orgao?.nome || 'N/A'}</div>
                     </div>
+                    ${denuncia.foto ? `
+                        <div class="denuncia-foto">
+                            <img src="http://localhost:8080/uploads/${denuncia.foto}"
+                                 style="max-width:100%; max-height:150px; object-fit:cover; border-radius:8px; margin-top:0.5rem; cursor:pointer;"
+                                 onclick="window.open('http://localhost:8080/uploads/${denuncia.foto}', '_blank')">
+                        </div>
+                    ` : ''}
                     ${denuncia.feedback ? `<div class="feedback"><strong>Feedback:</strong> ${denuncia.feedback.texto}</div>` : ''}
                     <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
                         <button class="btn-info" onclick="abrirFeedbackModal(${denuncia.id})">Dar Feedback</button>

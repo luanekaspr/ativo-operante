@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -50,13 +53,30 @@ public class CidadaoRestController {
     // ================================================= DENÚNCIAS ============================================================================
 
     // Adicionar denúncia
-    @PostMapping("/denuncias")
-    public ResponseEntity<Object> adicionarDenuncia(@RequestBody Denuncia denuncia) {
+    @PostMapping(value = "/denuncias", consumes = "multipart/form-data")
+    public ResponseEntity<Object> adicionarDenuncia(
+            @RequestPart("denuncia") Denuncia denuncia,
+            @RequestPart(value = "foto", required = false) MultipartFile foto) {
+
         ResponseEntity<Object> erroAcesso = validarAcessoCidadao();
         if (erroAcesso != null) return erroAcesso;
 
+        if (foto != null && !foto.isEmpty()) {
+            final String UPLOAD_FOLDER = "src/main/resources/static/uploads/";
+            try {
+                File uploadFolder = new File(UPLOAD_FOLDER);
+                if (!uploadFolder.exists()) uploadFolder.mkdir();
+
+                String nomeArquivo = System.currentTimeMillis() + "_" + foto.getOriginalFilename();
+                foto.transferTo(new File(uploadFolder.getAbsolutePath() + "/" + nomeArquivo));
+                denuncia.setFoto(nomeArquivo);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(new Erro("Erro ao salvar a foto."));
+            }
+        }
+
         denuncia = denunciaService.inserir(denuncia);
-        if(denuncia != null)
+        if (denuncia != null)
             return ResponseEntity.ok(denuncia);
         else
             return ResponseEntity.badRequest().body(new Erro("Erro ao cadastrar a denúncia!"));
