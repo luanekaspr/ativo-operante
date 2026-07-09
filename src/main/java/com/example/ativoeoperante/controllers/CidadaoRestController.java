@@ -82,7 +82,7 @@ public class CidadaoRestController {
             return ResponseEntity.badRequest().body(new Erro("Erro ao cadastrar a denúncia!"));
     }
 
-    // para consguir testar por enquanto passa o id do usuario direto como param
+    // passando o id do usuario direto como param
     @GetMapping("/denuncias/usuario/{usuarioId}")
     public ResponseEntity<Object> buscarDenunciasDoUsuario(@PathVariable Long usuarioId) {
         ResponseEntity<Object> erroAcesso = validarAcessoCidadao();

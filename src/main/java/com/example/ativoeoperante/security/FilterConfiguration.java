@@ -10,7 +10,7 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class FilterConfiguration {
-    /*aplica o Filtro de Cors, necessário em tempo de produção*/
+
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -29,7 +29,7 @@ public class FilterConfiguration {
     public FilterRegistrationBean <AccessFilter>registrationBean(){
         FilterRegistrationBean <AccessFilter>register = new FilterRegistrationBean();
         register.setFilter(new AccessFilter());
-        //coloque todas as rotas que devem ser analisadas pelo filtro de acesso
+
         register.addUrlPatterns("/apis/adm/*");
         register.addUrlPatterns("/apis/cidadao/*");
         register.setOrder(1);

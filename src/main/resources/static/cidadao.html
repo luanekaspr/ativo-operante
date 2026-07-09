@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ativo e Operante! - Área do Cidadão</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Ativo e Operante! — Área do Cidadão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -13,55 +13,59 @@
     <div class="nav-container">
         <div class="logo">
             <i class="fas fa-eye"></i>
-            <span>Ativo e Operante! - Cidadão</span>
+            <span>Ativo e <em>Operante!</em></span>
         </div>
         <div class="nav-links">
-            <a onclick="mostrarSecao('novaDenuncia')">Nova Denúncia</a>
-            <a onclick="mostrarSecao('minhasDenuncias')">Minhas Denúncias</a>
-            <button class="btn-logout" onclick="logout()">Sair</button>
+            <a onclick="mostrarSecao('novaDenuncia')"><i class="fas fa-plus" style="margin-right:5px;font-size:.75rem"></i>Nova denúncia</a>
+            <a onclick="mostrarSecao('minhasDenuncias')"><i class="fas fa-list" style="margin-right:5px;font-size:.75rem"></i>Minhas denúncias</a>
+            <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt" style="margin-right:5px"></i>Sair</button>
         </div>
     </div>
 </div>
 
 <div class="container">
     <div id="globalAlert" class="alert"></div>
-    <div id="loading" class="loading hidden"><i class="fas fa-spinner"></i> Carregando...</div>
+    <div id="loading" class="loading hidden"><i class="fas fa-spinner"></i><span>Carregando...</span></div>
 
     <!-- Nova Denúncia -->
     <div id="secaoNovaDenuncia" class="secao">
         <div class="card">
-            <h2><i class="fas fa-exclamation-triangle"></i> Registrar Nova Denúncia</h2>
+            <h2><i class="fas fa-exclamation-triangle"></i> Registrar nova denúncia</h2>
             <form id="formDenuncia">
                 <div class="form-group">
                     <label>Título</label>
-                    <input type="text" id="denunciaTitulo" required maxlength="100">
+                    <input type="text" id="denunciaTitulo" placeholder="Descreva o problema em poucas palavras" required maxlength="100">
                 </div>
                 <div class="form-group">
                     <label>Descrição</label>
-                    <textarea id="denunciaDescricao" required></textarea>
+                    <textarea id="denunciaDescricao" placeholder="Detalhe o problema, localização e qualquer informação relevante..." required></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Data</label>
+                    <label>Data do ocorrido</label>
                     <input type="date" id="denunciaData" required>
                 </div>
                 <div class="form-group">
-                    <label>Urgência (1 - Baixa a 5 - Muito Alta)</label>
+                    <label>Nível de urgência</label>
                     <input type="range" id="denunciaUrgencia" min="1" max="5" value="3" oninput="updateUrgenciaValue(this.value)">
                     <span id="urgenciaValue">3</span>
                 </div>
                 <div class="form-group">
-                    <label>Órgão Competente</label>
-                    <select id="denunciaOrgao" required></select>
+                    <label>Órgão competente</label>
+                    <select id="denunciaOrgao" required>
+                        <option value="">Selecione um órgão</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label>Tipo de Problema</label>
-                    <select id="denunciaTipo" required></select>
+                    <label>Tipo de problema</label>
+                    <select id="denunciaTipo" required>
+                        <option value="">Selecione um tipo</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label>Foto (Opcional)</label>
+                    <label>Foto <span style="font-weight:400;text-transform:none;color:var(--text-3)">(opcional)</span></label>
                     <input type="file" id="denunciaFoto" accept="image/*">
                 </div>
-                <button type="submit" class="btn-primary">Enviar Denúncia</button>
+                <button type="submit" class="btn-primary"><i class="fas fa-paper-plane" style="margin-right:7px"></i>Enviar denúncia</button>
             </form>
         </div>
     </div>
@@ -69,7 +73,7 @@
     <!-- Minhas Denúncias -->
     <div id="secaoMinhasDenuncias" class="secao hidden">
         <div class="card">
-            <h2><i class="fas fa-list"></i> Minhas Denúncias</h2>
+            <h2><i class="fas fa-list"></i> Minhas denúncias</h2>
             <div id="minhasDenunciasList"></div>
         </div>
     </div>
@@ -80,7 +84,6 @@
 <script src="js/auth.js"></script>
 <script src="js/cidadao.js"></script>
 <script>
-    // Verificar autenticação
     const savedToken = localStorage.getItem('token');
     const savedEmail = localStorage.getItem('userEmail');
 

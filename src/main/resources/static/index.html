@@ -3,29 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ativo e Operante! - Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Ativo e Operante!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="login-page">
 <div class="container">
     <div id="globalAlert" class="alert"></div>
     <div id="loading" class="loading hidden"><i class="fas fa-spinner"></i> Carregando...</div>
 
-    <!-- Tela de Login -->
+    <!-- Login -->
     <div id="loginScreen">
-        <div class="card" style="max-width: 400px; margin: 0 auto;">
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <i class="fas fa-eye" style="font-size: 3rem; color: #667eea;"></i>
-                <h1 style="margin-top: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Ativo e Operante!</h1>
-                <p style="color: #666;">Sistema de Denúncias Cidadãs</p>
+        <div class="login-hero">
+            <div class="brand-icon">
+                <i class="fas fa-eye"></i>
             </div>
+            <h1>Ativo e <span>Operante!</span></h1>
+            <p>Sistema de Denúncias Cidadãs</p>
+        </div>
 
-            <h2 style="text-align: center; margin-bottom: 1.5rem;">
-                <i class="fas fa-sign-in-alt"></i> Acessar Sistema
-            </h2>
-
+        <div class="login-card">
+            <h2><i class="fas fa-sign-in-alt"></i> Acessar sistema</h2>
             <form id="loginForm">
                 <div class="form-group">
                     <label>Email</label>
@@ -35,25 +34,27 @@
                     <label>Senha</label>
                     <input type="password" id="loginSenha" placeholder="••••••" required>
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%;">Entrar</button>
+                <button type="submit" class="btn-primary">Entrar</button>
             </form>
 
-            <hr style="margin: 1.5rem 0;">
+            <hr>
 
-            <p style="text-align: center;">
-                Não tem conta? <a href="#" onclick="showRegister()" style="color: #667eea; text-decoration: none; font-weight: 600;">Cadastre-se</a>
-            </p>
+            <p>Não tem conta? <a href="#" onclick="showRegister()">Cadastre-se</a></p>
         </div>
     </div>
 
-    <!-- Tela de Cadastro -->
+    <!-- Cadastro -->
     <div id="registerScreen" class="hidden">
-        <div class="card" style="max-width: 450px; margin: 0 auto;">
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <i class="fas fa-user-plus" style="font-size: 3rem; color: #667eea;"></i>
-                <h2 style="margin-top: 1rem; color: #667eea;">Cadastro de Cidadão</h2>
+        <div class="login-hero">
+            <div class="brand-icon">
+                <i class="fas fa-user-plus"></i>
             </div>
+            <h1>Criar <span>conta</span></h1>
+            <p>Cadastro de cidadão</p>
+        </div>
 
+        <div class="login-card">
+            <h2><i class="fas fa-id-card"></i> Seus dados</h2>
             <form id="registerForm">
                 <div class="form-group">
                     <label>CPF</label>
@@ -70,17 +71,15 @@
                     <input type="password" id="registerSenha" placeholder="••••••" required>
                 </div>
                 <div class="form-group">
-                    <label>Confirmar Senha</label>
+                    <label>Confirmar senha</label>
                     <input type="password" id="registerConfirmSenha" placeholder="••••••" required>
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%;">Cadastrar</button>
+                <button type="submit" class="btn-primary">Criar conta</button>
             </form>
 
-            <hr style="margin: 1.5rem 0;">
+            <hr>
 
-            <p style="text-align: center;">
-                Já tem conta? <a href="#" onclick="showLogin()" style="color: #667eea; text-decoration: none; font-weight: 600;">Faça login</a>
-            </p>
+            <p>Já tem conta? <a href="#" onclick="showLogin()">Fazer login</a></p>
         </div>
     </div>
 </div>
@@ -89,7 +88,6 @@
 <script src="js/api.js"></script>
 <script src="js/auth.js"></script>
 <script>
-    // Controle de telas
     function showLogin() {
         document.getElementById('loginScreen').classList.remove('hidden');
         document.getElementById('registerScreen').classList.add('hidden');
@@ -100,7 +98,6 @@
         document.getElementById('registerScreen').classList.remove('hidden');
     }
 
-    // Login
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('loginEmail').value;
@@ -108,7 +105,6 @@
         await login(email, senha);
     });
 
-    // Cadastro
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const cpf = document.getElementById('registerCpf').value.replace(/[^0-9]/g, '');
@@ -116,30 +112,18 @@
         const senha = document.getElementById('registerSenha').value;
         const confirmSenha = document.getElementById('registerConfirmSenha').value;
 
-        if (senha !== confirmSenha) {
-            showAlert('As senhas não coincidem!', 'error');
-            return;
-        }
-
-        if (cpf.length !== 11) {
-            showAlert('CPF inválido!', 'error');
-            return;
-        }
+        if (senha !== confirmSenha) { showAlert('As senhas não coincidem!', 'error'); return; }
+        if (cpf.length !== 11) { showAlert('CPF inválido!', 'error'); return; }
 
         await register(cpf, email, senha);
     });
 
-    // Verificar se já está logado
     const savedToken = localStorage.getItem('token');
     const savedEmail = localStorage.getItem('userEmail');
     if (savedToken && savedEmail) {
         authToken = savedToken;
         userEmail = savedEmail;
-        if (savedEmail === 'admin@pm.br') {
-            window.location.href = 'admin.html';
-        } else {
-            window.location.href = 'cidadao.html';
-        }
+        window.location.href = savedEmail === 'admin@pm.br' ? 'admin.html' : 'cidadao.html';
     }
 </script>
 </body>
