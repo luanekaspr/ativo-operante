@@ -9,22 +9,58 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="login-page">
-<div class="container">
-    <div id="globalAlert" class="alert"></div>
-    <div id="loading" class="loading hidden"><i class="fas fa-spinner"></i> Carregando...</div>
 
-    <!-- Login -->
-    <div id="loginScreen">
-        <div class="login-hero">
-            <div class="brand-icon">
-                <i class="fas fa-eye"></i>
+<!-- ESQUERDA: Brand -->
+<div class="login-left">
+    <div class="login-brand">
+        <div class="login-brand-icon">
+            <i class="fas fa-eye"></i>
+        </div>
+        <h1>Ativo e<br><span>Operante!</span></h1>
+        <p class="tagline">Sua voz, a cidade escuta.</p>
+
+        <div class="login-features">
+            <div class="login-feature">
+                <div class="login-feature-icon"><i class="fas fa-bolt"></i></div>
+                <div class="login-feature-text">
+                    <strong>Registre problemas rapidamente</strong>
+                    <span>Envie título, descrição, urgência e foto em segundos.</span>
+                </div>
             </div>
-            <h1>Ativo e <span>Operante!</span></h1>
-            <p>Sistema de Denúncias Cidadãs</p>
+            <div class="login-feature">
+                <div class="login-feature-icon"><i class="fas fa-route"></i></div>
+                <div class="login-feature-text">
+                    <strong>Direcionado ao órgão certo</strong>
+                    <span>Cada denúncia vai automaticamente para quem pode resolver.</span>
+                </div>
+            </div>
+            <div class="login-feature">
+                <div class="login-feature-icon"><i class="fas fa-comment-dots"></i></div>
+                <div class="login-feature-text">
+                    <strong>Acompanhe o retorno</strong>
+                    <span>Receba feedback da prefeitura diretamente na plataforma.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DIREITA: Auth forms -->
+<div class="login-right">
+    <div class="login-right-inner">
+        <div id="globalAlert" class="alert"></div>
+        <div id="loading" class="loading hidden"><i class="fas fa-spinner"></i><span>Entrando...</span></div>
+
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchTab('login')">Entrar</button>
+            <button class="auth-tab" onclick="switchTab('cadastro')">Criar conta</button>
         </div>
 
-        <div class="login-card">
-            <h2><i class="fas fa-sign-in-alt"></i> Acessar sistema</h2>
+        <!-- Login -->
+        <div id="panelLogin" class="auth-panel active">
+            <h2>Bem-vindo de volta</h2>
+            <p class="auth-sub">Acesse sua conta para registrar e acompanhar denúncias.</p>
+
             <form id="loginForm">
                 <div class="form-group">
                     <label>Email</label>
@@ -34,52 +70,46 @@
                     <label>Senha</label>
                     <input type="password" id="loginSenha" placeholder="••••••" required>
                 </div>
-                <button type="submit" class="btn-primary">Entrar</button>
+                <button type="submit" class="btn-primary" style="width:100%;justify-content:center">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
             </form>
 
-            <hr>
-
-            <p>Não tem conta? <a href="#" onclick="showRegister()">Cadastre-se</a></p>
-        </div>
-    </div>
-
-    <!-- Cadastro -->
-    <div id="registerScreen" class="hidden">
-        <div class="login-hero">
-            <div class="brand-icon">
-                <i class="fas fa-user-plus"></i>
-            </div>
-            <h1>Criar <span>conta</span></h1>
-            <p>Cadastro de cidadão</p>
+            <p class="auth-footer">Não tem conta? <a onclick="switchTab('cadastro')">Cadastre-se grátis</a></p>
         </div>
 
-        <div class="login-card">
-            <h2><i class="fas fa-id-card"></i> Seus dados</h2>
+        <!-- Cadastro -->
+        <div id="panelCadastro" class="auth-panel">
+            <h2>Criar conta</h2>
+            <p class="auth-sub">Cadastro rápido — comece a registrar denúncias agora.</p>
+
             <form id="registerForm">
                 <div class="form-group">
                     <label>CPF</label>
                     <input type="text" id="registerCpf" placeholder="000.000.000-00" required
-                           oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')"
+                           oninput="this.value=this.value.replace(/[^0-9]/g,'').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,'$1.$2.$3-$4')"
                            maxlength="14">
                 </div>
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" id="registerEmail" placeholder="seu@email.com" required>
                 </div>
-                <div class="form-group">
-                    <label>Senha</label>
-                    <input type="password" id="registerSenha" placeholder="••••••" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Senha</label>
+                        <input type="password" id="registerSenha" placeholder="••••••" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirmar senha</label>
+                        <input type="password" id="registerConfirmSenha" placeholder="••••••" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Confirmar senha</label>
-                    <input type="password" id="registerConfirmSenha" placeholder="••••••" required>
-                </div>
-                <button type="submit" class="btn-primary">Criar conta</button>
+                <button type="submit" class="btn-primary" style="width:100%;justify-content:center">
+                    <i class="fas fa-user-plus"></i> Criar conta
+                </button>
             </form>
 
-            <hr>
-
-            <p>Já tem conta? <a href="#" onclick="showLogin()">Fazer login</a></p>
+            <p class="auth-footer">Já tem conta? <a onclick="switchTab('login')">Fazer login</a></p>
         </div>
     </div>
 </div>
@@ -88,21 +118,17 @@
 <script src="js/api.js"></script>
 <script src="js/auth.js"></script>
 <script>
-    function showLogin() {
-        document.getElementById('loginScreen').classList.remove('hidden');
-        document.getElementById('registerScreen').classList.add('hidden');
-    }
-
-    function showRegister() {
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('registerScreen').classList.remove('hidden');
+    function switchTab(tab) {
+        document.querySelectorAll('.auth-tab').forEach((t, i) => {
+            t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'cadastro'));
+        });
+        document.getElementById('panelLogin').classList.toggle('active', tab === 'login');
+        document.getElementById('panelCadastro').classList.toggle('active', tab === 'cadastro');
     }
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = document.getElementById('loginEmail').value;
-        const senha = document.getElementById('loginSenha').value;
-        await login(email, senha);
+        await login(document.getElementById('loginEmail').value, document.getElementById('loginSenha').value);
     });
 
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
@@ -111,10 +137,8 @@
         const email = document.getElementById('registerEmail').value;
         const senha = document.getElementById('registerSenha').value;
         const confirmSenha = document.getElementById('registerConfirmSenha').value;
-
         if (senha !== confirmSenha) { showAlert('As senhas não coincidem!', 'error'); return; }
         if (cpf.length !== 11) { showAlert('CPF inválido!', 'error'); return; }
-
         await register(cpf, email, senha);
     });
 

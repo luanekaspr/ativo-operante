@@ -54,7 +54,7 @@ async function register(cpf, email, senha) {
         await apiRequest('/apis/acesso/cadastrar-cidadao', 'POST', usuario, false);
 
         showAlert('Cadastro realizado com sucesso! Faça login.', 'success');
-        showLogin();
+        switchTab('login');
 
     } catch (error) {
         showAlert(error.message, 'error');

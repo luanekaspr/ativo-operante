@@ -13,14 +13,25 @@
     <div class="nav-container">
         <div class="logo">
             <i class="fas fa-eye"></i>
-            <span>Ativo e <em>Operante!</em> <span style="font-size:.7rem;font-weight:400;color:rgba(0,212,160,.6);margin-left:4px">ADMIN</span></span>
+            <span>Ativo e <em>Operante!</em></span>
         </div>
         <div class="nav-links">
-            <a onclick="mostrarSecaoAdmin('denuncias')"><i class="fas fa-database" style="margin-right:5px;font-size:.75rem"></i>Denúncias</a>
-            <a onclick="mostrarSecaoAdmin('orgaos')"><i class="fas fa-building" style="margin-right:5px;font-size:.75rem"></i>Órgãos</a>
-            <a onclick="mostrarSecaoAdmin('tipos')"><i class="fas fa-tags" style="margin-right:5px;font-size:.75rem"></i>Tipos</a>
+            <a onclick="mostrarSecaoAdmin('denuncias')"><i class="fas fa-database" style="font-size:.7rem;margin-right:4px"></i>Denúncias</a>
+            <a onclick="mostrarSecaoAdmin('orgaos')"><i class="fas fa-building" style="font-size:.7rem;margin-right:4px"></i>Órgãos</a>
+            <a onclick="mostrarSecaoAdmin('tipos')"><i class="fas fa-tags" style="font-size:.7rem;margin-right:4px"></i>Tipos</a>
             <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt" style="margin-right:5px"></i>Sair</button>
         </div>
+    </div>
+</div>
+
+<!-- Welcome banner -->
+<div class="welcome-banner">
+    <div class="welcome-banner-inner">
+        <span>Painel administrativo —</span>
+        <strong id="welcomeEmail"></strong>
+        <span class="welcome-badge" style="background:rgba(240,68,56,.1);border-color:rgba(240,68,56,.2);color:#c0392b">
+            <i class="fas fa-circle" style="font-size:.4rem"></i>Admin
+        </span>
     </div>
 </div>
 
@@ -28,7 +39,6 @@
     <div id="globalAlert" class="alert"></div>
     <div id="loading" class="loading hidden"><i class="fas fa-spinner"></i><span>Carregando...</span></div>
 
-    <!-- Estatísticas -->
     <div class="stats-grid" id="statsGrid"></div>
 
     <!-- Todas Denúncias -->
@@ -43,30 +53,34 @@
     <div id="secaoAdminOrgaos" class="secao-admin hidden">
         <div class="card">
             <h2><i class="fas fa-building"></i> Gerenciar órgãos</h2>
-            <form id="formOrgao">
-                <div class="form-group">
+            <form id="formOrgao" style="display:flex;gap:.75rem;align-items:flex-end">
+                <div class="form-group" style="flex:1;margin:0">
                     <label>Nome do órgão</label>
                     <input type="text" id="orgaoNome" placeholder="Ex: Secretaria de Infraestrutura" required>
                 </div>
-                <button type="submit" class="btn-primary"><i class="fas fa-plus" style="margin-right:7px"></i>Adicionar órgão</button>
+                <button type="submit" class="btn-primary" style="white-space:nowrap;height:42px">
+                    <i class="fas fa-plus"></i> Adicionar
+                </button>
             </form>
-            <hr style="margin: 1.5rem 0;">
+            <hr style="margin:1.5rem 0">
             <div id="orgaosList"></div>
         </div>
     </div>
 
-    <!-- Tipos de Problema -->
+    <!-- Tipos -->
     <div id="secaoAdminTipos" class="secao-admin hidden">
         <div class="card">
             <h2><i class="fas fa-tags"></i> Gerenciar tipos de problema</h2>
-            <form id="formTipo">
-                <div class="form-group">
+            <form id="formTipo" style="display:flex;gap:.75rem;align-items:flex-end">
+                <div class="form-group" style="flex:1;margin:0">
                     <label>Nome do tipo</label>
                     <input type="text" id="tipoNome" placeholder="Ex: Iluminação pública, Buraco na via..." required>
                 </div>
-                <button type="submit" class="btn-primary"><i class="fas fa-plus" style="margin-right:7px"></i>Adicionar tipo</button>
+                <button type="submit" class="btn-primary" style="white-space:nowrap;height:42px">
+                    <i class="fas fa-plus"></i> Adicionar
+                </button>
             </form>
-            <hr style="margin: 1.5rem 0;">
+            <hr style="margin:1.5rem 0">
             <div id="tiposList"></div>
         </div>
     </div>
@@ -88,6 +102,7 @@
         authToken = savedToken;
         userEmail = savedEmail;
         userNivel = 'administrador';
+        document.getElementById('welcomeEmail').textContent = savedEmail;
         carregarDashboardAdmin();
     }
 </script>
