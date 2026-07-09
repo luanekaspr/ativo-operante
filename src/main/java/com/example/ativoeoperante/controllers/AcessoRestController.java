@@ -27,7 +27,7 @@ public class AcessoRestController {
 
         if(usuarioEncontrado != null) {
             if (usuarioEncontrado.getSenha() == senha) {
-                token = JWTTokenProvider.getToken(login, ""+usuarioEncontrado.getNivel());
+                token = JWTTokenProvider.getToken(login, ""+usuarioEncontrado.getNivel(), usuarioEncontrado.getId());
                 return new ResponseEntity<>(token, HttpStatus.OK);
             }
         }
@@ -44,6 +44,4 @@ public class AcessoRestController {
             return new ResponseEntity<>(new Erro("Este e-mail já está cadastrado no sistema."), HttpStatus.BAD_REQUEST);
         }
     }
-
-
 }

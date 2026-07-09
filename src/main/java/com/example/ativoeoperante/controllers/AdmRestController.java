@@ -22,7 +22,6 @@ public class AdmRestController {
     @Autowired
     DenunciaService denunciaService;
 
-    // verificar token e nivel
     private ResponseEntity<Object> validarAcessoAdmin() {
         String token = request.getHeader("Authorization");
 
@@ -84,7 +83,7 @@ public class AdmRestController {
         return ResponseEntity.ok(denunciaList);
     }
 
-    @DeleteMapping("/denuncia/deletar/{id}") //verificar se ja tem feedback ou nao
+    @DeleteMapping("/denuncia/deletar/{id}")
     public ResponseEntity<Object> remover(@PathVariable Long id) {
         ResponseEntity<Object> erroAcesso = validarAcessoAdmin();
         if (erroAcesso != null) return erroAcesso;
@@ -115,7 +114,7 @@ public class AdmRestController {
         ResponseEntity<Object> erroAcesso = validarAcessoAdmin();
         if (erroAcesso != null) return erroAcesso;
 
-        if(denunciaService.apagarFeedback(id).getFeedback() != null)
+        if(denunciaService.apagarFeedback(id))
             return ResponseEntity.noContent().build();
         else
             return ResponseEntity.badRequest().body(new Erro("Erro ao excluir feedback"));
@@ -267,7 +266,7 @@ public class AdmRestController {
     }
 
 
-    @DeleteMapping("/orgao/deletar/{id}") //verificar se ja tem denuncia com ele ou não
+    @DeleteMapping("/orgao/deletar/{id}")
     public ResponseEntity<Object> removerorgao(@PathVariable Long id) {
         ResponseEntity<Object> erroAcesso = validarAcessoAdmin();
         if (erroAcesso != null) return erroAcesso;

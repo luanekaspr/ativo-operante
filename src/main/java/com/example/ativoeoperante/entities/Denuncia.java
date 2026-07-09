@@ -30,6 +30,8 @@ public class Denuncia {
     private Usuario usuario;
     @OneToOne(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
     private Feedback feedback;
+    @Column(name = "den_foto")
+    private String foto;
 
 
 
@@ -46,18 +48,6 @@ public class Denuncia {
         this.dataHora = dataHora;
         this.tipo = tipo;
         this.usuario = usuario;
-    }
-
-    public Denuncia(Long id, String titulo, String texto, int urgencia, LocalDateTime dataHora, Orgao orgao, Tipo tipo, Usuario usuario, Feedback feedback) {
-        this.id = id;
-        this.titulo = titulo;
-        this.texto = texto;
-        this.urgencia = urgencia;
-        this.dataHora = dataHora;
-        this.orgao = orgao;
-        this.tipo = tipo;
-        this.usuario = usuario;
-        this.feedback = feedback;
     }
 
     public Feedback getFeedback() {
@@ -131,4 +121,8 @@ public class Denuncia {
     public void setOrgao(Orgao orgao) {
         this.orgao = orgao;
     }
+
+    public String getFoto() { return foto; }
+
+    public void setFoto(String foto) { this.foto = foto; }
 }

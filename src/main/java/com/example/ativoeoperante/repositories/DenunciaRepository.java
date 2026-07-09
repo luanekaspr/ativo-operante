@@ -15,10 +15,8 @@ public interface DenunciaRepository extends JpaRepository<Denuncia, Long> {
     @Query(value = "SELECT * FROM denuncia WHERE upper(den_titulo) LIKE %:keyword%",nativeQuery = true)
     public List<Denuncia> findByKW(@Param("keyword") String keyword);
 
-    //vem lá do tipo pra persistir se já existe antes de cadastrar
     boolean existsByTipoId(Long tipoId);
 
-    //vem lá do orgão pra persistir se já existe antes de cadastrar
     boolean existsByOrgaoId(Long tipoId);
 
     List<Denuncia> findByUsuarioId(Long usuarioId);

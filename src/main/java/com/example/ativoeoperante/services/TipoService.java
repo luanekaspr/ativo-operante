@@ -65,18 +65,4 @@ public class TipoService {
         tipoRepository.deleteById(id);
         return true;
     }
-
-    public boolean insert(Long id) {
-        Tipo existe = tipoRepository.findById(id).orElse(null);
-        if(existe == null)
-            return false;
-
-        boolean temDenuncia = denunciaRepository.existsByTipoId(id);
-        if(temDenuncia)
-            return false;
-
-        tipoRepository.deleteById(id);
-        return true;
-    }
-
 }

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ativo e Operante! — Área do Cidadão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="header">
+    <div class="nav-container">
+        <div class="logo">
+            <i class="fas fa-eye"></i>
+            <span>Ativo e <em>Operante!</em></span>
+        </div>
+        <div class="nav-links">
+            <a onclick="mostrarSecao('novaDenuncia')"><i class="fas fa-plus" style="font-size:.7rem;margin-right:4px"></i>Nova denúncia</a>
+            <a onclick="mostrarSecao('minhasDenuncias')"><i class="fas fa-list" style="font-size:.7rem;margin-right:4px"></i>Minhas denúncias</a>
+            <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt" style="margin-right:5px"></i>Sair</button>
+        </div>
+    </div>
+</div>
+
+<!-- Welcome banner -->
+<div class="welcome-banner">
+    <div class="welcome-banner-inner">
+        <span>Olá,</span>
+        <strong id="welcomeEmail"></strong>
+        <span class="welcome-badge"><i class="fas fa-circle" style="font-size:.4rem"></i>Cidadão</span>
+    </div>
+</div>
+
+<div class="container">
+    <div id="globalAlert" class="alert"></div>
+    <div id="loading" class="loading hidden"><i class="fas fa-spinner"></i><span>Carregando...</span></div>
+
+    <!-- Nova Denúncia -->
+    <div id="secaoNovaDenuncia" class="secao">
+        <div class="card">
+            <h2><i class="fas fa-exclamation-triangle"></i> Registrar nova denúncia</h2>
+            <form id="formDenuncia">
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="denunciaTitulo" placeholder="Descreva o problema em poucas palavras" required maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="denunciaDescricao" placeholder="Detalhe o problema, localização e qualquer informação relevante..." required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data do ocorrido</label>
+                        <input type="date" id="denunciaData" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nível de urgência</label>
+                        <div class="range-row" style="margin-top:.55rem">
+                            <input type="range" id="denunciaUrgencia" min="1" max="5" value="3" oninput="updateUrgenciaValue(this.value)">
+                            <span id="urgenciaValue">3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Órgão competente</label>
+                        <select id="denunciaOrgao" required>
+                            <option value="">Selecione um órgão</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de problema</label>
+                        <select id="denunciaTipo" required>
+                            <option value="">Selecione um tipo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Foto <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-3)">(opcional)</span></label>
+                    <input type="file" id="denunciaFoto" accept="image/*">
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-paper-plane"></i> Enviar denúncia
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Minhas Denúncias -->
+    <div id="secaoMinhasDenuncias" class="secao hidden">
+        <div class="card">
+            <h2><i class="fas fa-list"></i> Minhas denúncias</h2>
+            <div id="minhasDenunciasList"></div>
+        </div>
+    </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/cidadao.js"></script>
+<script>
+    const savedToken = localStorage.getItem('token');
+    const savedEmail = localStorage.getItem('userEmail');
+
+    if (!savedToken || !savedEmail) {
+        window.location.href = 'index.html';
+    } else if (savedEmail === 'admin@pm.br') {
+        window.location.href = 'admin.html';
+    } else {
+        authToken = savedToken;
+        userEmail = savedEmail;
+        userNivel = 'cidadao';
+        document.getElementById('welcomeEmail').textContent = savedEmail;
+        carregarDashboardCidadao();
+    }
+</script>
+</body>
+</html>
