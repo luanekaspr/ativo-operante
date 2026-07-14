@@ -240,7 +240,8 @@ ALTER TABLE ONLY public.usuario ALTER COLUMN usu_id SET DEFAULT nextval('public.
 -- Data for Name: denuncia; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.denuncia VALUES (1, 'semaforo quebrado', 'semaforo da av da saudede perto do campua I da Unoeste não está funcionando', 4, 4, '2023-05-12 00:00:00', 1, 2);
+INSERT INTO public.denuncia (den_id, den_titulo, den_texto, den_urgencia, org_id, den_data, tip_id, usu_id)
+VALUES (1, 'semaforo quebrado', 'semaforo da av da saudede perto do campua I da Unoeste não está funcionando', 4, 4, '2023-05-12 00:00:00', 1, 2);
 
 
 --
